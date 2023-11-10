@@ -3,12 +3,19 @@ package PL;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
-public class LAB10 implements ActionListener{
+public class LAB10 implements ActionListener {
 	JFrame frame;
 	private JPanel c1, c2;
 	private JButton addPoem, addVerse, addRoot;
@@ -29,7 +36,7 @@ public class LAB10 implements ActionListener{
 		contentPane = frame.getContentPane();
 		c1 = new JPanel();
 		c1.setLayout(null);
-		addPoem = new JButton("Manage Books");
+		addPoem = new JButton("Add Poem");
 		addVerse = new JButton("Add Verse");
 		addRoot = new JButton("Add new root");
 		c1.setBounds(0, 0, 200, 720);
@@ -46,18 +53,38 @@ public class LAB10 implements ActionListener{
 		addPoem.addActionListener(this);
 		addVerse.addActionListener(this);
 		addRoot.addActionListener(this);
-		
+
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		String command = e.getActionCommand();
-		if(command.equals("POEM")) {
-			System.out.println("ADD POEM");
-		}else if(command.equals("VERSE")) {
+		//add poem task by Faraz Maqsood
+		if (command.equals("POEM")) {
+			String filePath = "poem.txt";
+			try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)))) {
+				String line;
+				JFrame frame = new JFrame();
+				JTable table = new JTable();
+				JScrollPane scrollPane = new JScrollPane(table);
+				DefaultTableModel model = new DefaultTableModel();
+				model.addColumn("Poem Verses");
+				while ((line = br.readLine()) != null) {
+					model.addRow(new Object[] { line });
+				}
+				table.setModel(model);
+
+		        frame.add(scrollPane);
+		        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		        frame.pack();
+		        frame.setVisible(true);
+			} catch (IOException ex) {
+
+			}
+		} else if (command.equals("VERSE")) {
 			System.out.println("VERSE");
-		}else if(command.equals("ROOT")) {
+		} else if (command.equals("ROOT")) {
 			System.out.println("ROOT");
 		}
 	}
