@@ -25,7 +25,7 @@ public class AssignRootsPL {
         frame = new JFrame();
        frame.setSize(400,400);
        frame.setLocation(150,10);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JPanel panel = new JPanel();
         frame.getContentPane().add(panel, BorderLayout.CENTER);

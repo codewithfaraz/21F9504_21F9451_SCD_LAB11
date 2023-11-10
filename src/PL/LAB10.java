@@ -21,11 +21,12 @@ public class LAB10 implements ActionListener {
 	private JButton addPoem, addVerse, addRoot;
 	private Container contentPane;
 	AssignRootsPL pl;
+
 	// public constructor
 	public LAB10() {
-		pl=new AssignRootsPL();
+		pl = new AssignRootsPL();
 		init();
-		
+
 	}
 
 	// init function
@@ -40,11 +41,11 @@ public class LAB10 implements ActionListener {
 		c1.setLayout(null);
 		addPoem = new JButton("Add Poem");
 		addVerse = new JButton("Assign Roots");
-		addRoot = new JButton("Tokenize");
+		addRoot = new JButton("Tokenize Verse");
 		c1.setBounds(0, 0, 200, 720);
-		addPoem.setBounds(10, 10, 120, 40);
-		addVerse.setBounds(10, 60, 120, 40);
-		addRoot.setBounds(10, 110, 120, 40);
+		addPoem.setBounds(10, 10, 150, 40);
+		addVerse.setBounds(10, 60, 150, 40);
+		addRoot.setBounds(10, 110, 150, 40);
 		c1.add(addPoem);
 		c1.add(addRoot);
 		c1.add(addVerse);
@@ -55,31 +56,79 @@ public class LAB10 implements ActionListener {
 		addPoem.addActionListener(this);
 		addVerse.addActionListener(this);
 		addRoot.addActionListener(this);
-		
+
 		pl.assignRootButton.setActionCommand("Root");
 		pl.assignRootButton.addActionListener(this);
-		
+
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		String command = e.getActionCommand();
-		if(command.equals("POEM")) {
-			System.out.println("ADD POEM");
-		}else if(command.equals("Assign")) {
+		String filePath = "poem.txt";
+		String line;
+		JFrame frame;
+		JTable table;
+		JScrollPane scrollPane;
+		DefaultTableModel model;
+		//faraz
+		if (command.equals("POEM")) {
+			{
+				try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)))) {
+
+					frame = new JFrame();
+					table = new JTable();
+					scrollPane = new JScrollPane(table);
+					model = new DefaultTableModel();
+					model.addColumn("Poem Verses");
+					while ((line = br.readLine()) != null) {
+						model.addRow(new Object[] { line });
+					}
+					table.setModel(model);
+
+					frame.add(scrollPane);
+					frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+					frame.pack();
+					frame.setVisible(true);
+				} catch (IOException ex) {
+
+				}
+			}
+		} else if (command.equals("Assign")) {
 			System.out.println("VERSE");
 			pl.initialize();
-			
-		}else if(command.equals("Token")) {
-			System.out.println("ROOT");
+			//faraz
+		} else if (command.equals("Token")) {
+			try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)))) {
+				frame = new JFrame();
+				table = new JTable();
+				scrollPane = new JScrollPane(table);
+				model = new DefaultTableModel();
+				model.addColumn("Tokenized Verses");
+				int count = 0;
+				while ((line = br.readLine()) != null) {
+					count++;
+					String[] tokenizedVerse = line.split(" ");
+					for (int i = 0; i < tokenizedVerse.length; i++) {
+						model.addRow(new Object[] { tokenizedVerse[i] + "    V" + count });
+					}
+				}
+				table.setModel(model);
+
+				frame.add(scrollPane);
+				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				frame.pack();
+				frame.setVisible(true);
+			} catch (IOException ex) {
+
+			}
 		}
 	}
 
 	public static void main(String[] args) {
-		
+
 		LAB10 lab10 = new LAB10();
-	
 
 	}
 }
